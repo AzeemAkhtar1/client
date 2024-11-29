@@ -1,30 +1,44 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <router-link class="navbar-brand" to="/">Chat App</router-link>
+      <div class="navbar-nav ms-auto">
+        <template v-if="!isLoggedIn">
+          <router-link class="nav-link" to="/login">Login</router-link>
+          <router-link class="nav-link" to="/register">Register</router-link>
+        </template>
+        <a v-else @click="logout" class="nav-link" style="cursor: pointer">Logout</a>
+      </div>
+    </div>
   </nav>
   <router-view/>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+<script>
+export default {
+  name: 'App',
+  computed: {
+    isLoggedIn() {
+      return !!localStorage.getItem('token')
+    }
+  },
+  methods: {
+    logout() {
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+      this.$router.push('/login')
     }
   }
+}
+</script>
+
+<style>
+#app {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.navbar {
+  margin-bottom: 2rem;
 }
 </style>
